@@ -32,35 +32,9 @@ def get_vector_store(text_chunks):
     vector_store = FAISS.from_texts(text_chunks,embedding=embeddings)
     vector_store.save_local("chatwithpdf/faiss_index")
  
-def get_conversational_chain():
-    prompt_template = """
-    Asnwer tthe question as detailed as possible from the provided context, make sure to provide
-    all the details. If the answer is not in the provided context, then reply "Answer is not
-    available in the PDF". Don't provide the wrong answer. \n\n
-    Context : \n {context}?:\n
-    Question : \n {question}\n
- 
-    Answer :
-    """
-    model = ChatGoogleGenerativeAI(model="gemini-pro")
-    prompt = PromptTemplate(template=prompt_template,input_variables=["context","question"])
-    chain = load_qa_chain(model,prompt=prompt)
-    return chain
- 
-def user_input(question):
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-    data = FAISS.load_local("chatwithpdf/faiss_index",embeddings,allow_dangerous_deserialization=True)
-    docs = data.similarity_search(question)
-    chain = get_conversational_chain()
-    response = chain({"input_documents":docs,"question":question},return_only_outputs=True)
-    st.write(response['output_text'])
- 
 st.set_page_config(page_title="Chat with PDF",page_icon="📜")
 st.header("My Chat With PDF Web Application")
 user_question = st.text_input("Ask a question from PDF...")
- 
-if user_question:
-    user_input(user_question)
  
 with st.sidebar:
     st.title("Menu")
@@ -68,8 +42,7 @@ with st.sidebar:
                                 accept_multiple_files=True,type=['pdf'])
     submit = st.button("Submit & Process")
     if submit:
-        with st.spinner("Processing..."):
-            raw_text = get_pdf_text(pdf_docs)
-            text_chunks = get_text_chunks(raw_text)
-            get_vector_store(text_chunks)
-            st.success("Done")
+        raw_text = get_pdf_text(pdf_docs)
+        text_chunks = get_text_chunks(raw_text)
+        get_vector_store(text_chunks)
+        st.success("Done")
