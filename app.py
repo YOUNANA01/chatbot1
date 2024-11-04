@@ -9,7 +9,7 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 st.set_page_config(page_title="Invoice Extracter",page_icon="🐶")
 
-st.header("My Chat Bot Web Application")
+st.header("Invoice Extracter Web Application")
 
 question = st.text_input("Write a question here....")
 
