@@ -25,7 +25,7 @@ submit = st.button("Summarize")
  
 prompt = """You are a YouTuve video summarizer, you will be taking the transcript text and summarize the
 entire video and provide the import summary. Please provide the summary of the text given here in two
-languages, English and Hindi within 250-300 words. Please translate accordingly. \n\n"""
+languages, English and Hindi within 250-300 words. Please translate accordingly. """
  
 def extract_transcript_details(video_url):
     try:
@@ -42,9 +42,7 @@ if submit:
     try:
         transcript_text = extract_transcript_details(youtube_link)
         if transcript_text:
-            model = genai.GenerativeModel("gemini-pro")
-            summary = model.generate_content(prompt+transcript_text)
-            st.write(summary.text)
+            st.write(transcript_text)
         else:
             st.write("Unable to summarize")
     except Exception as e:
