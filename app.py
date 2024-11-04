@@ -8,7 +8,7 @@ load_dotenv()
  
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
  
-st.set_page_config(page_title="Nutrition Expert",page_icon="🐶")
+st.set_page_config(page_title="Nutrition Expert",page_icon="🗣️")
  
 st.header("Nutrition Expert Web Application")
  
